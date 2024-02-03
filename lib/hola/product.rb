@@ -13,6 +13,9 @@ module Hola
         ]
       end
 
+      def currency
+        "€"
+      end
     end
 
     attr_reader :id, :name, :price
@@ -21,6 +24,16 @@ module Hola
       @id = SecureRandom.uuid
       @name = name
       @price = price
+    end
+
+    def to_option
+      {name: title, value: id}
+    end
+
+    private
+
+    def title
+      "#{name} (#{format("%.2f", price)}#{self.class.currency})"
     end
   end
 end
