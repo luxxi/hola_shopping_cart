@@ -2,6 +2,7 @@
 
 require "tty-prompt"
 require "hola/helper/product_selector"
+require "hola/helper/cart_renderer"
 
 module Hola
   class App
@@ -17,6 +18,8 @@ module Hola
 
         break unless prompt.yes?("Would you like to add more items?")
       end
+
+      prompt.say(Helper::CartRenderer.new.perform)
     end
 
     private
