@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "tty-prompt"
+require "hola/product"
 
 module Hola
   module Helper
@@ -10,25 +11,34 @@ module Hola
       end
 
       def perform
-        prompt.collect do
-          key(:product).select(
-            "Please choose product",
-            ["Green Tea (3.11€)", "Strawberries (5.00€)", "Coffee (11.23€)"]
-          )
-          key(:quantity).ask(
-            "How much quantity would you like to add in cart (stock: 100)? ",
-            convert: :int
-          ) do |q|
-            q.in("1-100")
-            q.messages[:range?] = "out of expected range"
-            q.messages[:convert?] = "not a number"
-          end
-        end
+        {
+          product_id: select_product,
+          quantity: select_quantity
+        }
       end
 
       private
 
       attr_reader :prompt
+
+      def product_options
+        @product_options ||= Product.list.map(&:to_option)
+      end
+
+      def select_product
+        prompt.select("Please choose product", product_options)
+      end
+
+      def select_quantity
+        prompt.ask(
+          "How much quantity would you like to add in cart (stock: 100)? ",
+          convert: :int
+        ) do |q|
+          q.in("1-100")
+          q.messages[:range?] = "out of expected range"
+          q.messages[:convert?] = "not a number"
+        end
+      end
     end
   end
 end

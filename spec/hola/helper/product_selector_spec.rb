@@ -2,6 +2,7 @@
 
 require "spec_helper"
 require "hola/helper/product_selector"
+require "hola/product"
 require "tty-prompt"
 require "tty/prompt/test"
 
@@ -15,11 +16,19 @@ RSpec.describe Hola::Helper::ProductSelector do
 
     subject { described_class.new(prompt).perform }
 
+    let(:green_tea) { Hola::Product.new(name: "Green Tea", price: 3.11) }
+    let(:strawberries) { Hola::Product.new(name: "Strawberries", price: 5.0) }
+    let(:coffee) { Hola::Product.new(name: "Coffee", price: 11.23) }
+
     before do
       prompt.on :keypress do |e|
         prompt.trigger :keyup   if e.value == "k"
         prompt.trigger :keydown if e.value == "j"
       end
+
+      allow(Hola::Product).to receive(:list).and_return(
+        [green_tea, strawberries, coffee]
+      )
     end
 
     it "prints correct output" do
@@ -39,19 +48,19 @@ RSpec.describe Hola::Helper::ProductSelector do
     it "selects Strawberries with quantity of 1" do
       prompt.input << "j" << "\n" << "j" << "\n" << 1 << "\n" << "n" << "\n"
       prompt.input.rewind
-      expect(subject).to include({product: "Strawberries (5.00€)", quantity: 1})
+      expect(subject).to include({product_id: strawberries.id, quantity: 1})
     end
 
     it "selects Green Tea with quantity of 3" do
       prompt.input << "\n" << 3 << "\n" << "n" << "\n"
       prompt.input.rewind
-      expect(subject).to include({product: "Green Tea (3.11€)", quantity: 3})
+      expect(subject).to include({product_id: green_tea.id, quantity: 3})
     end
 
     it "selects Coffee with quantity of 2" do
       prompt.input << "j" << "j" << "j" << "\n" << 2 << "\n" << "n" << "\n"
       prompt.input.rewind
-      expect(subject).to include({product: "Coffee (11.23€)", quantity: 2})
+      expect(subject).to include({product_id: coffee.id, quantity: 2})
     end
   end
 end
