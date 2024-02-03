@@ -5,4 +5,5 @@ source "https://rubygems.org"
 group :test, :development do
   gem "rspec", "~> 3.12"
   gem "rubocop", "~> 1.60.2"
+  gem "tty-prompt", "~> 0.23.1"
 end
