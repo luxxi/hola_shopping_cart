@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require "hola"
+
+Hola::CLI.start
