@@ -23,7 +23,7 @@ RSpec.describe Hola::App do
     end
 
     it "prints correct output" do
-      prompt.input << "\n" << 1 << "\n"
+      prompt.input << "\n" << 1 << "\n" << "n" << "\n"
       prompt.input.rewind
       subject
       aggregate_failures("verifying output") do
@@ -38,29 +38,54 @@ RSpec.describe Hola::App do
     end
 
     it "selects Strawberries" do
-      prompt.input << "j" << "\n" << "j" << "\n" << 1 << "\n"
+      prompt.input << "j" << "\n" << "j" << "\n" << 1 << "\n" << "n" << "\n"
       prompt.input.rewind
       subject
       aggregate_failures("verifying product selection") do
         expect(prompt.output.string).to include(
           "Please choose product \e[32mStrawberries (5.00€)"
         )
-        expect(prompt.output.string).not_to include("
-          Please choose product \e[32mGreen Tea (3.11€)"
+        expect(prompt.output.string).not_to include(
+          "Please choose product \e[32mGreen Tea (3.11€)"
         )
-        expect(prompt.output.string).not_to include("
-          Please choose product \e[32mCoffee (11.23€)"
+        expect(prompt.output.string).not_to include(
+          "Please choose product \e[32mCoffee (11.23€)"
         )
       end
     end
 
     it "selects quantity" do
-      prompt.input << "\n" << 3 << "\n"
+      prompt.input << "\n" << 3 << "\n" << "n" << "\n"
       prompt.input.rewind
       subject
       expect(prompt.output.string).to include(
         "How much quantity would you like to add in cart (stock: 100)?  3"
       )
+    end
+
+    it "selects two products" do
+      # step 1:
+      prompt.input << "j" << "\n" << "j" << "\n" # add Strawberries
+      prompt.input << 1 << "\n" # choose quantity
+      # step 2:
+      prompt.input << "j" << "\n" # add Green Tea
+      prompt.input << 2 << "\n" # choose quantity
+      # finish selection
+      prompt.input << "n" << "\n"
+
+      prompt.input.rewind
+      subject
+      aggregate_failures("verifying product selection") do
+        expect(prompt.output.string).to include(
+          "Please choose product \e[32mStrawberries (5.00€)"
+        )
+        expect(prompt.output.string).to include(
+          "Please choose product \n  Green Tea (3.11€)"
+        )
+        expect(prompt.output.string).not_to include(
+          "Please choose product \e[32mCoffee (11.23€)"
+        )
+      end
     end
   end
 end

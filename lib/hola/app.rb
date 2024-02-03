@@ -11,8 +11,11 @@ module Hola
     def run
       prompt.say("Hola. It's shopping time 🛍️")
 
-      select_product
-      select_quantity
+      loop do
+        select_product
+        select_quantity
+        break unless prompt.yes?("Would you like to add more items?")
+      end
     end
 
     private
