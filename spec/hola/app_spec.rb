@@ -15,9 +15,29 @@ RSpec.describe Hola::App do
 
     subject { described_class.new(prompt).run }
 
-    it "prints welcome text" do
+    before do
+      prompt.on :keypress do |e|
+        prompt.trigger :keyup   if e.value == "k"
+        prompt.trigger :keydown if e.value == "j"
+      end
+    end
+
+    it "prints correct output" do
+      prompt.input << "\n"
+      prompt.input.rewind
       subject
-      expect(prompt.output.string).to start_with("Hola. It's shopping time 🛍️\n")
+      aggregate_failures("verifying output") do
+        expect(prompt.output.string).to start_with("Hola. It's shopping time 🛍️\n")
+        expect(prompt.output.string).to include("Green Tea (3.11€)")
+        expect(prompt.output.string).to include("Strawberries (5.00€)")
+        expect(prompt.output.string).to include("Coffee (11.23€)")
+      end
+    end
+
+    it "selects Strawberries" do
+      prompt.input << "j" << "\n" << "j" << "\n"
+      prompt.input.rewind
+      expect(subject).to eq("Strawberries (5.00€)")
     end
   end
 end
