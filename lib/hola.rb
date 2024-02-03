@@ -6,6 +6,7 @@ module Hola
   class CLI
     class << self
       def start
+        App.new.run
       end
     end
   end
