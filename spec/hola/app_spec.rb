@@ -16,26 +16,44 @@ RSpec.describe Hola::App do
     subject { described_class.new(prompt).run }
 
     let(:selector) { instance_double(Hola::Helper::ProductSelector) }
+    let(:cart) { instance_double(Hola::Cart) }
     before do
       allow(Hola::Helper::ProductSelector).to receive(:new).and_return(selector)
       allow(selector).to receive(:perform).and_return({
-        product: "Green Tea (3.11€)",
+        product_id: "792a7032-6d09-4533-9770-91ba37476e07",
         quantity: 2
       })
+      allow(Hola::Cart).to receive(:new).and_return(cart)
+      allow(cart).to receive(:add)
     end
 
-    it "selects input one time" do
-      prompt.input << "n" << "\n"
-      prompt.input.rewind
-      subject
-      expect(selector).to have_received(:perform)
+    context "one product input" do
+      before do
+        prompt.input << "n" << "\n"
+        prompt.input.rewind
+      end
+
+      it "selects product one time" do
+        subject
+        expect(selector).to have_received(:perform)
+      end
     end
 
-    it "selects input two times" do
-      prompt.input << "y" << "\n" << "n" << "\n"
-      prompt.input.rewind
-      subject
-      expect(selector).to have_received(:perform).exactly(2).times
+    context "two times input" do
+      before do
+        prompt.input << "y" << "\n" << "n" << "\n"
+        prompt.input.rewind
+      end
+    
+      it "selects product two times" do
+        subject
+        expect(selector).to have_received(:perform).exactly(2).times
+      end
+
+      it "adds to cart two times" do
+        subject
+        expect(cart).to have_received(:add).exactly(2).times
+      end
     end
   end
 end

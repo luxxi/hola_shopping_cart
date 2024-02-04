@@ -3,6 +3,7 @@
 require "tty-prompt"
 require "hola/helper/product_selector"
 require "hola/helper/cart_renderer"
+require "hola/cart"
 
 module Hola
   class App
@@ -14,7 +15,11 @@ module Hola
       prompt.say("Hola. It's shopping time 🛍️")
 
       loop do
-        Helper::ProductSelector.new(prompt).perform
+        selection = Helper::ProductSelector.new(prompt).perform
+        cart.add(
+          product_id: selection[:product_id],
+          quantity: selection[:quantity]
+        )
 
         break unless prompt.yes?("Would you like to add more items?")
       end
@@ -26,6 +31,10 @@ module Hola
 
     def prompt
       @prompt ||= TTY::Prompt.new
+    end
+
+    def cart
+      @cart ||= Cart.new
     end
   end
 end
