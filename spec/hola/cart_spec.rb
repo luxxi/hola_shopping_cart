@@ -34,4 +34,27 @@ RSpec.describe Hola::Cart do
       expect(instance.total).to eq(product.price * quantity)
     end
   end
+
+  describe ".output" do
+    subject do
+      instance.output
+    end
+
+    let(:product) { instance_double(Hola::Product, name: "x", price: 3.11) }
+
+    before do
+      allow(Hola::Product).to receive(:find).and_return(product)
+      allow(instance).to receive(:items).and_return({
+        "xxx" => 2,
+        "yyy" => 3
+      })
+    end
+
+    it "returns array of products" do
+      expect(subject).to match_array([
+        ["x", 2, "6.22"],
+        ["x", 3, "9.33"],
+      ])
+    end
+  end
 end

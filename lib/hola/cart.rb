@@ -15,10 +15,20 @@ module Hola
       items[product_id] = quantity
       @total += product(product_id)&.price * quantity
     end
+    def output
+      items.map do |id, quantity|
+        product = product(id)
+        [
+          product.name,
+          quantity,
+          format("%.2f", product.price * quantity)
+        ]
+      end
+    end
     private
 
     def product(id)
-      @product ||= Product.find(id)
+      Product.find(id)
     end
   end
 end
