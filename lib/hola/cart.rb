@@ -15,7 +15,7 @@ module Hola
     def add(product_id:, quantity:)
       items[product_id] = Cart::Item::Processor.new(
         product_id: product_id,
-        quantity: quantity
+        quantity: items[product_id].quantity + quantity
       ).perform
     end
 
@@ -28,4 +28,3 @@ module Hola
     end
   end
 end
-
