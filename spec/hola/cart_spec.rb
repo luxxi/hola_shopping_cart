@@ -18,20 +18,17 @@ RSpec.describe Hola::Cart do
     let(:product_id) { "xxx" }
     let(:quantity) { 3 }
 
-    let(:product) { instance_double(Hola::Product, price: 3.11) }
+
+
+    let(:item) { instance_double(Hola::Cart::Item) }
 
     before do
-      allow(Hola::Product).to receive(:find).and_return(product)
+      allow(Hola::Cart::Item).to receive(:new).and_return(item)
     end
 
-    it "adds quantity to item" do
+    it "adds item to cart" do
       subject
-      expect(instance.items[product_id]).to eq(quantity)
-    end
-
-    it "increases total" do
-      subject
-      expect(instance.total).to eq(product.price * quantity)
+      expect(instance.items[product_id]).to eq(item)
     end
   end
 
@@ -40,21 +37,18 @@ RSpec.describe Hola::Cart do
       instance.output
     end
 
-    let(:product) { instance_double(Hola::Product, name: "x", price: 3.11) }
+    let(:item1) { instance_double(Hola::Cart::Item, output: ["a"]) }
+    let(:item2) { instance_double(Hola::Cart::Item, output: ["b"]) }
 
     before do
-      allow(Hola::Product).to receive(:find).and_return(product)
       allow(instance).to receive(:items).and_return({
-        "xxx" => 2,
-        "yyy" => 3
+        "xxx" => item1,
+        "yyy" => item2
       })
     end
 
-    it "returns array of products" do
-      expect(subject).to match_array([
-        ["x", 2, "6.22"],
-        ["x", 3, "9.33"],
-      ])
+    it "returns combined output from items" do
+      expect(subject).to match_array([["a"], ["b"]])
     end
   end
 end

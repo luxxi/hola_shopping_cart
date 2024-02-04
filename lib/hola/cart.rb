@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "hola/cart/item"
 require "hola/product"
 
 module Hola
@@ -7,24 +8,21 @@ module Hola
     attr_reader :items, :total
 
     def initialize
-      @items = Hash.new(0)
+      @items = Hash.new { Cart::Item.new }
       @total = 0
     end
 
     def add(product_id:, quantity:)
-      items[product_id] = quantity
-      @total += product(product_id)&.price * quantity
+      items[product_id] = Cart::Item.new(
+        product: product(product_id),
+        quantity: quantity
+      )
+      @total += items[product_id].subtotal
     end
     def output
-      items.map do |id, quantity|
-        product = product(id)
-        [
-          product.name,
-          quantity,
-          format("%.2f", product.price * quantity)
-        ]
-      end
+      items.map { |_k, item| item.output }
     end
+
     private
 
     def product(id)
