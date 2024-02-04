@@ -17,18 +17,47 @@ RSpec.describe Hola::Cart do
 
     let(:product_id) { "xxx" }
     let(:quantity) { 3 }
+    let(:subtotal) { 6.0 }
 
-
-
-    let(:item) { instance_double(Hola::Cart::Item) }
+    let(:processor) { instance_double(Hola::Cart::Item::Processor) }
+    let(:item) do
+      instance_double(Hola::Cart::Item, quantity: quantity, subtotal: subtotal)
+    end
 
     before do
       allow(Hola::Cart::Item).to receive(:new).and_return(item)
+      allow(Hola::Cart::Item::Processor).to receive(:new).and_return(processor)
+      allow(processor).to receive(:perform).and_return(item)
     end
 
-    it "adds item to cart" do
+    it "performs cart item processor" do
       subject
-      expect(instance.items[product_id]).to eq(item)
+      expect(processor).to have_received(:perform)
+    end
+
+    it "returns cart item" do
+      expect(subject).to be(item)
+    end
+  end
+
+  describe ".total" do
+    subject do
+      instance.total
+    end
+
+    let(:subtotal) { 4.55 }
+    let(:item1) { instance_double(Hola::Cart::Item, subtotal: subtotal) }
+    let(:item2) { instance_double(Hola::Cart::Item, subtotal: subtotal) }
+
+    before do
+      allow(instance).to receive(:items).and_return({
+        "xxx" => item1,
+        "yyy" => item2
+      })
+    end
+
+    it "computes the sum of multiple items" do
+      expect(subject).to eq(subtotal * 2)
     end
   end
 

@@ -1,32 +1,30 @@
 # frozen_string_literal: true
 
+require "hola/cart/item/processor"
 require "hola/cart/item"
 require "hola/product"
 
 module Hola
   class Cart
-    attr_reader :items, :total
+    attr_reader :items
 
     def initialize
       @items = Hash.new { Cart::Item.new }
-      @total = 0
     end
 
     def add(product_id:, quantity:)
-      items[product_id] = Cart::Item.new(
-        product: product(product_id),
+      items[product_id] = Cart::Item::Processor.new(
+        product_id: product_id,
         quantity: quantity
-      )
-      @total += items[product_id].subtotal
+      ).perform
     end
+
+    def total
+      items.sum { |_k, item| item.subtotal }
+    end
+
     def output
       items.map { |_k, item| item.output }
-    end
-
-    private
-
-    def product(id)
-      Product.find(id)
     end
   end
 end
