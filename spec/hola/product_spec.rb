@@ -50,5 +50,42 @@ module Hola
       end
     end
 
+    describe "#currency" do
+      subject { described_class.currency }
+
+      it "returns EUR sign" do
+        expect(subject).to eq("€")
+      end
+    end
+
+    describe ".to_option" do
+      subject do
+        described_class.new(name: name, price: price, offer: offer).to_option
+      end
+
+      let(:name) { "Strawberries" }
+      let(:price) { 3.4 }
+      let(:offer) { nil }
+
+      it "returns a hash" do
+        expect(subject.class).to be(Hash)
+      end
+
+      it "returns title including name" do
+        expect(subject[:name]).to include("Strawberries")
+      end
+
+      it "returns title including formatted price to two decimals" do
+        expect(subject[:name]).to include("3.40")
+      end
+
+      it "returns title including currency sign" do
+        expect(subject[:name]).to include("€")
+      end
+
+      it "returns generated uuid as id" do
+        expect(subject[:value]).to be_a_uuid
+      end
+    end
   end
 end

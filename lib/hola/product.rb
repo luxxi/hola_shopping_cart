@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
+require "hola/product/inventory"
 require "securerandom"
 
 module Hola
   class Product
     class << self
       def list
-        @list ||= [
-          Product.new(name: "Green Tea", price: 3.11, offer: "GetOneFree"),
-          Product.new(name: "Strawberries", price: 5.0, offer: "StrawberryBulkDiscount"),
-          Product.new(name: "Coffee", price: 11.23, offer: "TwoThirdsBulkDiscount")
-        ]
+        Inventory.instance.products
       end
 
       def find(id)
-        list.find { |p| p.id == id }
+        Inventory.instance.find_product(id)
       end
+
       def currency
         "€"
       end
