@@ -27,12 +27,12 @@ module Hola
       end
 
       def select_product
-        prompt.select("Please choose product", product_options)
+        prompt.select("Choose a product", product_options)
       end
 
       def select_quantity
         prompt.ask(
-          "How much quantity would you like to add in cart (stock: 100)? ",
+          "Select quantity (stock: 100)? ",
           convert: :int
         ) do |q|
           q.in("1-100")
