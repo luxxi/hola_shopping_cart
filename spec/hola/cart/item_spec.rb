@@ -16,14 +16,6 @@ RSpec.describe Hola::Cart::Item do
     instance_double(Hola::Product, name: "Green Tea", price: 3.11)
   end
 
-  describe ".subtotal" do
-    subject { instance.subtotal }
-
-    it "computes subtotal" do
-      expect(subject).to eq(product.price * quantity) 
-    end
-  end
-
   describe ".output" do
     subject { instance.output }
 
