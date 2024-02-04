@@ -1,14 +1,14 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "hola/helper/product_selector"
+require "hola/product/selector"
 require "hola/product"
 require "tty-prompt"
 require "tty/prompt/test"
 
-RSpec.describe Hola::Helper::ProductSelector do
+RSpec.describe Hola::Product::Selector do
   it "is available as described_class" do
-    expect(described_class).to eq(Hola::Helper::ProductSelector)
+    expect(described_class).to eq(Hola::Product::Selector)
   end
 
   describe ".perform" do

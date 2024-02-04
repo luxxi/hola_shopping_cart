@@ -5,8 +5,8 @@ require "hola/product"
 
 # This class provides an interface for a user to select a product
 module Hola
-  module Helper
-    class ProductSelector
+  class Product
+    class Selector
       def initialize(prompt)
         @prompt = prompt
       end

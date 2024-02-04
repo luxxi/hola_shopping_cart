@@ -3,12 +3,12 @@
 require "spec_helper"
 require "tty-prompt"
 require "tty/prompt/test"
-require "hola/helper/cart_renderer"
+require "hola/cart/renderer"
 require "hola/cart"
 
-RSpec.describe Hola::Helper::CartRenderer do
+RSpec.describe Hola::Cart::Renderer do
   it "is available as described_class" do
-    expect(described_class).to eq(Hola::Helper::CartRenderer)
+    expect(described_class).to eq(Hola::Cart::Renderer)
   end
 
   describe ".perform" do

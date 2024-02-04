@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 require "tty-prompt"
-require "hola/helper/product_selector"
-require "hola/helper/cart_renderer"
+require "hola/product/selector"
+require "hola/cart/renderer"
 require "hola/cart"
 
 # This class facilitates user flow experience.
@@ -17,7 +17,7 @@ module Hola
       prompt.say("Hola. It's shopping time 🛍️")
 
       loop do
-        selection = Helper::ProductSelector.new(prompt).perform
+        selection = Product::Selector.new(prompt).perform
         cart.add(
           product_id: selection[:product_id],
           quantity: selection[:quantity]
@@ -26,7 +26,7 @@ module Hola
         break unless prompt.yes?("Would you like to add more items?")
       end
 
-      prompt.say(Helper::CartRenderer.new(cart).perform)
+      prompt.say(Cart::Renderer.new(cart).perform)
     end
 
     private

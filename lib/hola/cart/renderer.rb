@@ -5,8 +5,8 @@ require "hola/product"
 
 # Renders cart in table format
 module Hola
-  module Helper
-    class CartRenderer
+  class Cart
+    class Renderer
       def initialize(cart)
         @cart = cart
       end
