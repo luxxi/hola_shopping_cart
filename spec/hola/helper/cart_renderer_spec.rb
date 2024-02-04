@@ -1,9 +1,10 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "hola/helper/cart_renderer"
 require "tty-prompt"
 require "tty/prompt/test"
+require "hola/helper/cart_renderer"
+require "hola/cart"
 
 RSpec.describe Hola::Helper::CartRenderer do
   it "is available as described_class" do
@@ -11,8 +12,9 @@ RSpec.describe Hola::Helper::CartRenderer do
   end
 
   describe ".perform" do
-    subject { described_class.new.perform }
+    subject { described_class.new(cart).perform }
 
+    let(:cart) { Hola::Cart.new }
     let(:table) { instance_double(TTY::Table) }
     before do
       allow(TTY::Table).to receive(:new).and_return(table)

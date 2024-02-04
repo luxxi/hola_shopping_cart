@@ -25,6 +25,8 @@ RSpec.describe Hola::App do
       })
       allow(Hola::Cart).to receive(:new).and_return(cart)
       allow(cart).to receive(:add)
+      allow(cart).to receive(:output)
+      allow(cart).to receive(:total).and_return(3.11)
     end
 
     context "one product input" do
@@ -44,7 +46,7 @@ RSpec.describe Hola::App do
         prompt.input << "y" << "\n" << "n" << "\n"
         prompt.input.rewind
       end
-    
+
       it "selects product two times" do
         subject
         expect(selector).to have_received(:perform).exactly(2).times

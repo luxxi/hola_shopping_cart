@@ -3,6 +3,7 @@
 require "tty-table"
 require "hola/product"
 
+# Renders cart in table format
 module Hola
   module Helper
     class CartRenderer
@@ -20,14 +21,24 @@ module Hola
 
       def table
         @table ||= TTY::Table.new(
-          header: ["Item", "Quantity", "Price(#{Product.currency})"],
+          header: [
+            "Item",
+            "Price(#{currency})",
+            "Quantity",
+            "Subtotal(#{currency})",
+            "Offer"
+          ],
           rows: [
             :separator,
             *cart.output,
             :separator,
-            ["Total", "", format("%.2f", cart.total)]
+            ["Total", "", "", format("%.2f", cart.total), ""]
           ]
         )
+      end
+
+      def currency
+        @currency ||= Product.currency
       end
     end
   end

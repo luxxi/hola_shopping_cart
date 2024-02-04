@@ -15,7 +15,13 @@ module Hola
       end
 
       def output
-        [product.name, quantity, format("%.2f", subtotal), offer]
+        [
+          product.name,
+          format("%.2f", product.price),
+          quantity,
+          format("%.2f", subtotal),
+          offer
+        ]
       end
     end
   end

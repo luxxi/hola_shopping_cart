@@ -29,8 +29,9 @@ RSpec.describe Hola::Cart::Item do
       aggregate_failures("verifying output") do
         expect(subject.class).to be(Array)
         expect(subject[0]).to eq(product.name)
-        expect(subject[1]).to eq(quantity)
-        expect(subject[2]).to eq(format("%.2f", subtotal))
+        expect(subject[1]).to eq(product.price.to_s)
+        expect(subject[2]).to eq(quantity)
+        expect(subject[3]).to eq(format("%.2f", subtotal))
       end
     end
   end
