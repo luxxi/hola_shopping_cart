@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+# A parent class that all offers should inherit from
 module Hola
   class Offer
     attr_reader :product, :quantity

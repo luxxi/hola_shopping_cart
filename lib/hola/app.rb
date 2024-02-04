@@ -5,6 +5,8 @@ require "hola/helper/product_selector"
 require "hola/helper/cart_renderer"
 require "hola/cart"
 
+# This class facilitates user flow experience.
+# It allows user to select products and prints the cart.
 module Hola
   class App
     def initialize(prompt = nil)

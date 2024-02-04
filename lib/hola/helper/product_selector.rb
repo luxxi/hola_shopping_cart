@@ -3,6 +3,7 @@
 require "tty-prompt"
 require "hola/product"
 
+# This class provides an interface for a user to select a product
 module Hola
   module Helper
     class ProductSelector

@@ -4,6 +4,7 @@ require "hola/cart/item/processor"
 require "hola/cart/item"
 require "hola/product"
 
+# The cart is responsible for holding list of items
 module Hola
   class Cart
     attr_reader :items
