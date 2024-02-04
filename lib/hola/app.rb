@@ -24,7 +24,7 @@ module Hola
         break unless prompt.yes?("Would you like to add more items?")
       end
 
-      prompt.say(Helper::CartRenderer.new.perform)
+      prompt.say(Helper::CartRenderer.new(cart).perform)
     end
 
     private
