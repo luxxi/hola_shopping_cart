@@ -23,9 +23,9 @@ module Hola
           header: ["Item", "Quantity", "Price(#{Product.currency})"],
           rows: [
             :separator,
-            ["Green Tea", 2, "3.11€"],
+            *cart.output,
             :separator,
-            ["Total", "", "3.11€"]
+            ["Total", "", format("%.2f", cart.total)]
           ]
         )
       end
