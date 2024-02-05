@@ -120,3 +120,6 @@ Style/RaiseArgs:
 
 Lint/NonDeterministicRequireOrder:
   Enabled: false
+
+Naming/MemoizedInstanceVariableName:
+  EnforcedStyleForLeadingUnderscores: optional
