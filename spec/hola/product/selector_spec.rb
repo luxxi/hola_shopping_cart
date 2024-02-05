@@ -40,7 +40,7 @@ RSpec.describe Hola::Product::Selector do
         expect(prompt.output.string).to include("Strawberries (5.00€)")
         expect(prompt.output.string).to include("Coffee (11.23€)")
         expect(prompt.output.string).to include(
-          "How much quantity would you like to add in cart (stock: 100)?"
+          "Select quantity (stock: 100)? "
         )
       end
     end
