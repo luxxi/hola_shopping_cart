@@ -21,24 +21,14 @@ module Hola
 
       def table
         @table ||= TTY::Table.new(
-          header: [
-            "Item",
-            "Price(#{currency})",
-            "Quantity",
-            "Subtotal(#{currency})",
-            "Offer"
-          ],
+          header: %w[Item Price Quantity Subtotal Offer],
           rows: [
             :separator,
             *cart.output,
             :separator,
-            ["Total", "", "", format("%.2f", cart.total), ""]
+            ["Total", "", "", Utils::Money.to_currency(cart.total), ""]
           ]
         )
-      end
-
-      def currency
-        @currency ||= Product.currency
       end
     end
   end

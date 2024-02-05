@@ -17,9 +17,9 @@ module Hola
       def output
         [
           product.name,
-          format("%.2f", product.price),
+          Utils::Money.to_currency(product.price),
           quantity,
-          format("%.2f", subtotal),
+          Utils::Money.to_currency(subtotal),
           offer
         ]
       end
