@@ -10,6 +10,10 @@ module Hola
         def parse(...)
           new(...).parse
         end
+
+        def to_currency(...)
+          new(...).to_currency
+        end
       end
 
       def initialize(value)
@@ -20,6 +24,10 @@ module Hola
         BigDecimal((value || 0).to_s.strip)
       rescue ArgumentError, TypeError => err
         raise Error.new(err.message)
+      end
+
+      def to_currency
+        "#{format("%.2f", value)}#{Product.currency}"
       end
 
       private
