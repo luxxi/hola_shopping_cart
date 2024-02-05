@@ -19,13 +19,13 @@ module Hola
         end
 
         def perform
-          return default_cart_item unless product.offer
+          return cart_item unless product.offer
 
           Object.const_get("Hola::Offer::#{product.offer}")
             .new(product: product, quantity: quantity)
             .apply
         rescue NameError
-          default_cart_item
+          cart_item
         end
 
         private
@@ -34,16 +34,16 @@ module Hola
           @product ||= Product.find(product_id)
         end
 
-        def default_cart_item
+        def cart_item
           Cart::Item.new(
             product: product,
             quantity: quantity,
-            subtotal: default_subtotal
+            subtotal: subtotal
           )
         end
 
-        def default_subtotal
-          @default_subtotal ||= product.price * quantity
+        def subtotal
+          @subtotal ||= product.price * quantity
         end
       end
     end
