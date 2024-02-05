@@ -15,10 +15,10 @@ RSpec.describe Hola::App do
 
     subject { described_class.new(prompt).run }
 
-    let(:selector) { instance_double(Hola::Helper::ProductSelector) }
+    let(:selector) { instance_double(Hola::Product::Selector) }
     let(:cart) { instance_double(Hola::Cart) }
     before do
-      allow(Hola::Helper::ProductSelector).to receive(:new).and_return(selector)
+      allow(Hola::Product::Selector).to receive(:new).and_return(selector)
       allow(selector).to receive(:perform).and_return({
         product_id: "792a7032-6d09-4533-9770-91ba37476e07",
         quantity: 2
