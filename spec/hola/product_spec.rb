@@ -1,10 +1,26 @@
 require "spec_helper"
 require "hola/product"
+require "hola/utils/money"
 
 module Hola
   RSpec.describe Product do
     it "is available as described_class" do
       expect(described_class).to eq(Product)
+    end
+
+    let(:name) { "Strawberries" }
+    let(:price) { 3.4 }
+    let(:offer) { nil }
+
+    subject { described_class.new(name: name, price: price, offer: offer) }
+
+    before do
+      allow(Hola::Utils::Money).to receive(:parse).and_call_original
+    end
+
+    it "parses price" do
+      subject.price
+      expect(Hola::Utils::Money).to have_received(:parse).with(price)
     end
 
     describe "#list" do
@@ -62,10 +78,6 @@ module Hola
       subject do
         described_class.new(name: name, price: price, offer: offer).to_option
       end
-
-      let(:name) { "Strawberries" }
-      let(:price) { 3.4 }
-      let(:offer) { nil }
 
       it "returns a hash" do
         expect(subject.class).to be(Hash)

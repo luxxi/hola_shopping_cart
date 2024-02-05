@@ -1,11 +1,12 @@
 # frozen_string_literal: true
 
+require "bigdecimal"
 require "hola/cart/item"
 
 module Hola
   class Offer
     class StrawberryBulkDiscount < Offer
-      DISCOUNTED_PRICE = 4.5
+      DISCOUNTED_PRICE = BigDecimal("4.5")
 
       def apply
         Cart::Item.new(

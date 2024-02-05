@@ -13,7 +13,7 @@ RSpec.describe Hola::Cart::Item do
 
   let(:quantity) { 3 }
   let(:product) do
-    instance_double(Hola::Product, name: "Green Tea", price: 3.11)
+    instance_double(Hola::Product, name: "Green Tea", price: BigDecimal("3.11"))
   end
 
   describe ".output" do

@@ -18,7 +18,7 @@ RSpec.describe Hola::Cart::Item::Processor do
     end
 
     let(:product) do
-      instance_double(Hola::Product, id: id, price: 3.11, offer: offer)
+      instance_double(Hola::Product, id: id, price: BigDecimal("3.11"), offer: offer)
     end
     let(:id) { "98a870aa-aa9b-4291-8193-18d361e3a453" }
     let(:quantity) { 2 }

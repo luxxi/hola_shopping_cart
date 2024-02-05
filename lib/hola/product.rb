@@ -19,7 +19,7 @@ module Hola
       end
     end
 
-    attr_reader :id, :name, :price, :offer
+    attr_reader :id, :name, :offer
 
     def initialize(name:, price:, offer: "")
       @id = SecureRandom.uuid
@@ -30,6 +30,10 @@ module Hola
 
     def to_option
       {name: title, value: id}
+    end
+
+    def price
+      @_price ||= Utils::Money.parse(@price)
     end
 
     private

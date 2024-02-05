@@ -17,7 +17,7 @@ RSpec.shared_examples :offer do
   describe ".apply" do
     subject { instance.apply }
 
-    let(:product) { instance_double(Hola::Product, price: 3.11) }
+    let(:product) { instance_double(Hola::Product, price: BigDecimal("3.11")) }
 
     before do
       allow(Hola::Cart::Item).to receive(:new).and_call_original

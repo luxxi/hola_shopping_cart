@@ -11,7 +11,7 @@ RSpec.describe Hola::Offer::GetOneFree do
   it_behaves_like :offer
 
   describe ".apply" do
-    let(:price) { 3.11 }
+    let(:price) { BigDecimal("3.11") }
     let(:product) { instance_double(Hola::Product, price: price) }
     let(:instance) { described_class.new(product: product, quantity: quantity) }
 
