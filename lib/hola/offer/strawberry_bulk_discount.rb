@@ -2,6 +2,7 @@
 
 require "bigdecimal"
 require "hola/cart/item"
+require "hola/cart/item/subtotal"
 
 module Hola
   class Offer
@@ -24,7 +25,10 @@ module Hola
       end
 
       def subtotal
-        price * quantity
+        @subtotal ||= Cart::Item::Subtotal.new(
+          price: price,
+          quantity: quantity
+        ).compute
       end
 
       def price

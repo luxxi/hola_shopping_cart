@@ -23,10 +23,13 @@ RSpec.describe Hola::Cart::Item::Processor do
     let(:id) { "98a870aa-aa9b-4291-8193-18d361e3a453" }
     let(:quantity) { 2 }
     let(:offer) { "" }
-    let(:subtotal) { product.price * quantity }
+    let(:subtotal_value) { BigDecimal("6.22") }
+    let(:subtotal) { instance_double(Hola::Cart::Item::Subtotal) }
 
     before do
       allow(Hola::Product).to receive(:find).and_return(product)
+      allow(Hola::Cart::Item::Subtotal).to receive(:new).and_return(subtotal)
+      allow(subtotal).to receive(:compute).and_return(subtotal_value)
     end
 
     it "returns cart item class" do
@@ -37,13 +40,13 @@ RSpec.describe Hola::Cart::Item::Processor do
       expect(Hola::Cart::Item).to receive(:new).with(
         product: product,
         quantity: quantity,
-        subtotal: subtotal
+        subtotal: subtotal_value
       )
       subject
     end
 
     it "computes subtotal as product of price and quantity" do
-      expect(subject.subtotal).to eq(subtotal)
+      expect(subject.subtotal).to eq(subtotal_value)
     end
 
     context "product has an offer" do

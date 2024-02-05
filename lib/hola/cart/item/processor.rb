@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "hola/cart/item/subtotal"
 require "hola/cart/item"
 require "hola/offer"
 Dir.glob(File.expand_path("../../offer/*.rb", __dir__), &method(:require))
@@ -35,7 +36,7 @@ module Hola
         end
 
         def cart_item
-          Cart::Item.new(
+          @cart_item ||= Cart::Item.new(
             product: product,
             quantity: quantity,
             subtotal: subtotal
@@ -43,7 +44,10 @@ module Hola
         end
 
         def subtotal
-          @subtotal ||= product.price * quantity
+          @subtotal ||= Cart::Item::Subtotal.new(
+            price: product.price,
+            quantity: quantity
+          ).compute
         end
       end
     end

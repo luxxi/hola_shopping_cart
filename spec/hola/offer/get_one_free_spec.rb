@@ -17,15 +17,27 @@ RSpec.describe Hola::Offer::GetOneFree do
 
     subject { instance.apply }
 
+    let(:subtotal) { instance_double(Hola::Cart::Item::Subtotal) }
+
     before do
       allow(Hola::Cart::Item).to receive(:new).and_call_original
+      allow(Hola::Cart::Item::Subtotal).to receive(:new).and_return(subtotal)
+      allow(subtotal).to receive(:compute)
     end
 
     context "quantity of 1" do
       let(:quantity) { 1 }
 
-      it "computes subtotal" do
-        expect(subject.subtotal).to eq(price)
+      it "sends quantity to subtotal calculation" do
+        subject
+
+        aggregate_failures("verifying subtotal call") do
+          expect(Hola::Cart::Item::Subtotal).to have_received(:new).with(
+            price: product.price,
+            quantity: quantity
+          )
+          expect(subtotal).to have_received(:compute)
+        end
       end
 
       it "includes offer name" do
@@ -36,8 +48,16 @@ RSpec.describe Hola::Offer::GetOneFree do
     context "quantity of 2" do
       let(:quantity) { 2 }
 
-      it "computes subtotal" do
-        expect(subject.subtotal).to eq(price)
+      it "sends reduced quantity to subtotal calculation" do
+        subject
+
+        aggregate_failures("verifying subtotal call") do
+          expect(Hola::Cart::Item::Subtotal).to have_received(:new).with(
+            price: product.price,
+            quantity: quantity - 1
+          )
+          expect(subtotal).to have_received(:compute)
+        end
       end
 
       it "includes offer name" do
@@ -48,8 +68,16 @@ RSpec.describe Hola::Offer::GetOneFree do
     context "quantity of 3" do
       let(:quantity) { 3 }
 
-      it "computes subtotal" do
-        expect(subject.subtotal).to eq(price * 2)
+      it "sends reduced quantity to subtotal calculation" do
+        subject
+
+        aggregate_failures("verifying subtotal call") do
+          expect(Hola::Cart::Item::Subtotal).to have_received(:new).with(
+            price: product.price,
+            quantity: quantity - 1
+          )
+          expect(subtotal).to have_received(:compute)
+        end
       end
 
       it "includes offer name" do

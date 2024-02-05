@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "hola/cart/item"
+require "hola/cart/item/subtotal"
 
 module Hola
   class Offer
@@ -21,7 +22,10 @@ module Hola
       end
 
       def subtotal
-        product.price * discounted_quantity
+        @subtotal ||= Cart::Item::Subtotal.new(
+          price: product.price,
+          quantity: discounted_quantity
+        ).compute
       end
 
       def discounted_quantity

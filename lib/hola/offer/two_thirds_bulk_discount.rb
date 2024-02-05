@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
+require "bigdecimal"
 require "hola/cart/item"
+require "hola/cart/item/subtotal"
 
 module Hola
   class Offer
@@ -21,13 +23,17 @@ module Hola
       end
 
       def subtotal
-        product.price * discount * quantity
+        @subtotal ||= Cart::Item::Subtotal.new(
+          price: product.price,
+          quantity: quantity,
+          discount: discount
+        ).compute
       end
 
       def discount
-        return 1 unless eligible?
+        return BigDecimal(1) unless eligible?
 
-        2.0 / 3.0
+        BigDecimal(2) / BigDecimal(3)
       end
 
       def eligible?
