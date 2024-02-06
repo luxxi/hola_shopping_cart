@@ -104,8 +104,8 @@ product.apply_offer("NewSpecialDiscount")
 ## Tests
 ```
 rspec ./spec
-.................................................................
+.............................................................................................
 
-Finished in 0.0427 seconds (files took 0.24592 seconds to load)
-109 examples, 0 failures
+Finished in 0.0316 seconds (files took 0.15474 seconds to load)
+93 examples, 0 failures
 ```
