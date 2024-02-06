@@ -9,7 +9,7 @@ require "hola/cart"
 # It allows user to select products and prints the cart.
 module Hola
   class App
-    def initialize(prompt = nil)
+    def initialize(prompt = TTY::Prompt.new)
       @prompt = prompt
     end
 
@@ -31,9 +31,7 @@ module Hola
 
     private
 
-    def prompt
-      @prompt ||= TTY::Prompt.new
-    end
+    attr_reader :prompt
 
     def cart
       @cart ||= Cart.new
