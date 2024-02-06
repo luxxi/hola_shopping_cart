@@ -12,14 +12,27 @@ RSpec.describe Hola::Offer do
     described_class.new(product: product, quantity: quantity)
   end
 
-  let(:product) { "xxx" }
   let(:quantity) { 3 }
+  let(:price) { BigDecimal("3.11") }
+  let(:product) { instance_double(Hola::Product, price: price) }
 
-  it "returns product" do
-    expect(subject.product).to eq(product)
+  it "responds to name" do
+    expect(subject.name).to eq("")
   end
 
-  it "returns quantity" do
+  it "responds to price" do
+    expect(subject.price).to eq(price)
+  end
+
+  it "responds to quantity" do
     expect(subject.quantity).to eq(quantity)
+  end
+
+  it "responds to applied?" do
+    expect(subject.applied?).to eq(false)
+  end
+
+  it "computes to subtotal" do
+    expect(subject.subtotal).to eq(product.price * quantity)
   end
 end

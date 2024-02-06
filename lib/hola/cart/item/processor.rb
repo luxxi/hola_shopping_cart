@@ -36,8 +36,8 @@ module Hola
 
         def offer
           @offer ||= begin
-            klass = product.offer? ? "::#{product.offer}" : ""
-            Object.const_get("Hola::Offer#{klass}").new(
+            klass = product.offer? ? product.offer : "NoOffer"
+            Object.const_get("Hola::Offer::#{klass}").new(
               product: product,
               quantity: quantity
             )

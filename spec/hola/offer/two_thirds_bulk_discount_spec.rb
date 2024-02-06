@@ -2,7 +2,6 @@
 
 require "spec_helper"
 require "hola/offer/two_thirds_bulk_discount"
-require "hola/cart/item/subtotal"
 
 RSpec.describe Hola::Offer::TwoThirdsBulkDiscount do
   it "is available as described_class" do
@@ -11,82 +10,54 @@ RSpec.describe Hola::Offer::TwoThirdsBulkDiscount do
 
   it_behaves_like :offer
 
-  describe ".apply" do
-    let(:price) { BigDecimal("11.23") }
-    let(:product) { instance_double(Hola::Product, price: price) }
-    let(:instance) { described_class.new(product: product, quantity: quantity) }
+  let(:price) { BigDecimal("3.11") }
+  let(:product) { instance_double(Hola::Product, price: price) }
+  let(:quantity) { 1 }
+  let(:discounted_price) { price * (BigDecimal(2) / BigDecimal(3)) }
 
-    subject { instance.apply }
+  subject { described_class.new(product: product, quantity: quantity) }
 
-    let(:subtotal) { instance_double(Hola::Cart::Item::Subtotal) }
+  it "includes offer name" do
+    expect(subject.name).to eq("Two-Thirds Bulk Discount")
+  end
 
-    before do
-      allow(Hola::Cart::Item).to receive(:new).and_call_original
-      allow(Hola::Cart::Item::Subtotal).to receive(:new).and_return(subtotal)
-      allow(subtotal).to receive(:compute)
+  context "quantity of 1" do
+    let(:quantity) { 1 }
+
+    it "does not affect subtotal computation" do
+      expect(subject.subtotal).to eq(price * quantity)
     end
 
-    context "quantity of 1" do
-      let(:quantity) { 1 }
+    it "does not apply offer" do
+      expect(subject.applied?).to eq(false)
+    end
+  end
 
-      it "sends discount 1 to subtotal calculation" do
-        subject
+  context "quantity of 2" do
+    let(:quantity) { 2 }
 
-        aggregate_failures("verifying subtotal call") do
-          expect(Hola::Cart::Item::Subtotal).to have_received(:new).with(
-            price: price,
-            quantity: quantity,
-            discount: BigDecimal(1)
-          )
-          expect(subtotal).to have_received(:compute)
-        end
-      end
-
-      it "does not include offer name" do
-        expect(subject.offer).to be nil
-      end
+    it "does not affect subtotal computation" do
+      expect(subject.subtotal).to eq(price * quantity)
     end
 
-    context "quantity of 2" do
-      let(:quantity) { 2 }
+    it "does not apply offer" do
+      expect(subject.applied?).to eq(false)
+    end
+  end
 
-      it "sends discount 1 to subtotal calculation" do
-        subject
+  context "quantity of 3" do
+    let(:quantity) { 3 }
 
-        aggregate_failures("verifying subtotal call") do
-          expect(Hola::Cart::Item::Subtotal).to have_received(:new).with(
-            price: price,
-            quantity: quantity,
-            discount: BigDecimal(1)
-          )
-          expect(subtotal).to have_received(:compute)
-        end
-      end
-
-      it "does not include offer name" do
-        expect(subject.offer).to be nil
-      end
+    it "does affect subtotal computation by reduced price" do
+      expect(subject.price).to eq(discounted_price)
     end
 
-    context "quantity of 3" do
-      let(:quantity) { 3 }
+    it "does affect subtotal computation by reduced price" do
+      expect(subject.subtotal).to eq(discounted_price * quantity)
+    end
 
-      it "sends discount 1 to subtotal calculation" do
-        subject
-
-        aggregate_failures("verifying subtotal call") do
-          expect(Hola::Cart::Item::Subtotal).to have_received(:new).with(
-            price: price,
-            quantity: quantity,
-            discount: BigDecimal(2) / BigDecimal(3)
-          )
-          expect(subtotal).to have_received(:compute)
-        end
-      end
-
-      it "includes offer name" do
-        expect(subject.offer).to eq("Two-Thirds Bulk Discount")
-      end
+    it "does apply offer" do
+      expect(subject.applied?).to eq(true)
     end
   end
 end
