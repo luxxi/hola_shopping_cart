@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "hola/cart/item/pricing"
 require "hola/cart/item"
 require "hola/offer"
 Dir.glob(File.expand_path("../../offer/*.rb", __dir__), &method(:require))
