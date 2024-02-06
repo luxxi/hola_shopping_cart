@@ -99,5 +99,19 @@ module Hola
         expect(subject[:value]).to be_a_uuid
       end
     end
+
+    describe ".apply_offer" do
+      let(:new_offer) { "NewOffer" }
+
+      subject do
+        described_class
+          .new(name: name, price: price, offer: "X")
+          .apply_offer(new_offer)
+      end
+
+      it "replaces old offer with new one" do
+        expect(subject).to eq(new_offer)
+      end
+    end
   end
 end

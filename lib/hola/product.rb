@@ -37,7 +37,13 @@ module Hola
       {name: title, value: id}
     end
 
+    def apply_offer(name)
+      self.offer = name
+    end
+
     private
+
+    attr_writer :offer
 
     def title
       "#{name} (#{Utils::Money.to_currency(price)})"
