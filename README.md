@@ -81,10 +81,10 @@ The [TTY::Table](https://github.com/piotrmurach/tty-table) table formatting comp
 +------------+------+--------+--------+------------------------+
 ```
 
-### Flexability
+### Flexibility
 The architecture is designed to be flexible as much as possible when comes to adding new special offers or modifying existing ones.
 
-To add a new special offer, we have to create a new file inside `hola/offers`. The example below shows adding a price reduction of 20%.
+To add a new special offer, you must create a new file inside `hola/offers`. The example below shows adding a price reduction of 20%.
 ```ruby
 module Hola
   class Offer
