@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "hola/product/inventory"
+require "hola/utils/money"
 require "securerandom"
 
 module Hola
@@ -19,27 +20,27 @@ module Hola
       end
     end
 
-    attr_reader :id, :name, :offer
+    attr_reader :id, :name, :price, :offer
 
     def initialize(name:, price:, offer: "")
       @id = SecureRandom.uuid
       @name = name
-      @price = price
+      @price = Utils::Money.parse(price)
       @offer = offer
+    end
+
+    def offer?
+      !offer.empty?
     end
 
     def to_option
       {name: title, value: id}
     end
 
-    def price
-      @_price ||= Utils::Money.parse(@price)
-    end
-
     private
 
     def title
-      "#{name} (#{format("%.2f", price)}#{self.class.currency})"
+      "#{name} (#{Utils::Money.to_currency(price)})"
     end
   end
 end
