@@ -101,6 +101,22 @@ The last step is to add a newly created special offer to a product.
 product.apply_offer("NewSpecialDiscount")
 ```
 
+Changing the existing offers is possible by editing the corresponding file of the offer: 
+
+* Buy-one-get-one-free
+  ```
+  hola/offer/get_one_free.rb 
+  ```
+* Strawberries price changes to 4.50€ on a bulk order where quantity is 3 or more
+  ```
+  hola/offer/strawberry_bulk_discount.rb
+  ```
+* Price drops to 2/3 of the original price on a bulk order where quantity is 3 or more
+  ```
+  hola/offer/two_thirds_bulk_discount.rb
+  ```
+
+
 ## Tests
 ```
 rspec ./spec
